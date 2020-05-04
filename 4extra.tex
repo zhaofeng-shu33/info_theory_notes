@@ -1,0 +1,87 @@
+\documentclass{article}
+\usepackage{ctex}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{enumitem}
+\usepackage{mathtools}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+
+\def\E{\mathbb{E}}
+\def\Var{\textrm{Var}}
+\usepackage{hyperref}
+\begin{document}
+\begin{enumerate}
+\item
+\begin{enumerate}[label=(\alph*)] 
+\item $I(X;Y) = H(Y) - H(Y|X) = H(Y) - \log 3 \leq \log 11 - \log 3 = \log { 11 \over 3 } $
+所以 $ C = \log { 11 \over 3} $
+\item 当 $X$ 等概时达到信道容量。 $ p(x) = { 1 \over 11} , x \in \{ 0, 1, 2, \dots, 10 \}$
+\end{enumerate}
+
+\item
+\begin{enumerate}[label=(\alph*)] 
+\item 设 $Q = \begin{bmatrix} 1- p & p \\ p & 1-p \end{bmatrix}$
+$X_0$ 到 $X_n$ 的转移概率矩阵为 $Q^n  = { 1 \over 2}
+\begin{bmatrix} 1+ (1 -2 p)^n & 1 - (1 - 2p)^n \\
+1 - (1 - 2p)^n & 1 + (1 - 2p)^n 
+\end{bmatrix} $
+所以$n$个二进制对称信道的级联等价于一个 错误概率 为 $ p_e =  { 1 \over 2} (1 - (1 - 2p)^n ) $ 的对称信道。
+若 $ p \neq 0, 1 $， 则 $ -1 < 1 - 2 p < 1 $ 。 当 $ n \to \infty $ 时， $ p_e \to { 1 \over 2} $。此时 $ I (X_0;X_n ) = 0 $。 
+\end{enumerate}
+\item
+\begin{enumerate}[label=(\alph*)] 
+\item 
+该DMC信道的转移概率矩阵为 $ Q = \begin{bmatrix} 1 - \alpha - \epsilon & \epsilon & \alpha \\
+\epsilon & 1 - \alpha - \epsilon & \alpha 
+\end{bmatrix}$
+为一准对称信道，当输入分布等概时达到信道容量。
+此时 $ Y $ 的分布为 $ \begin{pmatrix} 0 & 1 & e \\ { 1 - \alpha \over 2} & { 1 - \alpha \over 2} & \alpha \end{pmatrix} $，
+$ Y | X = i $ 的分布为 $Q$ 的 第 $ ( i + 1 ) $ 行。于是可以求出
+\begin{align*}
+ C & = I (X;Y) = H(Y) - H(Y|X) \\
+ & = (1 - \alpha - \epsilon ) \log ( 1 - \alpha - \epsilon ) + \epsilon \log \epsilon - (1 - \alpha ) \log \frac{ 1 - \alpha }{ 2}
+\end{align*}
+\item 当 $ \alpha = 0 $ 时(BSC)， $ C = 1 - h(\epsilon)$， 其中 $ h(\epsilon) $ 为二元熵函数。
+\item 当 $ \epsilon = 0 $ 时(BEC)， $ C = 1 - \alpha $。
+\end{enumerate}
+
+\item 
+\begin{enumerate}[label=(\alph*)] 
+\item 
+$ Y = 2 X + Z_1 + Z_2 \Rightarrow h(Y|X) = h(Z_1 + Z_2) $。因为 $\Var[Z_1 + Z_2 ] =  2(1+ \rho) \sigma^2 $，
+所以 $ h(Z_1 + Z_2) = { 1 \over 2} \log (2\pi e \Var[Z_1 + Z_2] )$。
+又因为 $ \Var[Y] = \Var[2X + Z_1 + Z_2 ] = 4 P + \Var[Z_1 + Z_2 ]  $  为定值， 当 $ Y $ 是高斯分布时 $h (Y) $ 
+最大，此时 $ h^*(Y) = { 1 \over 2} \log (2\pi e \Var[Y] )$
+$ \Rightarrow C = h^*(Y) - h(Y|X) = {1 \over 2} \log ( 1 + { 2P \over (\rho+1) \sigma^2})$
+\item 当 $ \rho = 1 $ 时， $ Z_1 \overset{as}{=} Z_2  \Rightarrow C = { 1 \over 2} \log ( 1 + { P \over \sigma^2})$；
+当 $ \rho = 0 $ 时， $ Z_1 $ 与$ Z_2 $ 独立， $ \Rightarrow C = { 1 \over 2} \log ( 1 + { 2P \over \sigma^2})$；
+当 $ \rho = -1 $ 时， $ Z_1 \overset{as}{=} -Z_2 \Rightarrow C = h^*(Y) = h^*(2X) = { 1\over 2} \log (8\pi e P) $
+\end{enumerate}
+\item
+总的输入功率的约束为 $ \E [ \sum_{j = 1}^k X_j^2 ]\leq P $
+根据$(x)^{+} = \begin{cases} x & x \geq 0 \\ 0 & x< 0 \end{cases}$的定义 可得要证的结论。
+\item （针对$DMC$ 信道的信道编码定理证明）由第10题推导得出的不等式 
+$ R \leq { 1 \over 1 - P_e^{(n)} } ({ 1 \over n}  + C)$
+因为 $ P_e^{(n)} \leq \lambda^{(n)} \to 0 $ 所以 令 $ n \to \infty $ 得到 $ R \leq C$
+\item 根据限带加性高斯白噪声信道的香农公式，$R \leq W \log (1 + { E \over \sigma } ) $ 代入数据得 $ E \geq 255\mu W$
+\item
+根据 \href{https://en.wikipedia.org/wiki/Z-channel_(information_theory)}{wikipedia}, 设输入分布为 $Bern(p) $，
+当 $ p = { 2 \over 5} $ 时， 达到信道容量 $ \log { 5 \over 4} $。
+\item $ \Pr\{ (X^n, Y^n, Z^n ) \in A_{\epsilon}^{(n)} \} \leq 2^{ -n ( H(X) + H(Y) + H(Z) - H(X, Y, Z) - 4 \epsilon ) } $
+
+$ \Pr\{ (X^n, Y^n, Z^n ) \in A_{\epsilon}^{(n)} \} \geq (1-\epsilon)2^{ -n ( H(X) + H(Y) + H(Z) - H(X, Y, Z) + 4 \epsilon ) } $（当 $n$ 充分大时）
+\item 设 $W$ 是均匀分布的 $ J = 2^{nR}  \Rightarrow nR = H(W)$。 由 Fano 不等式 $H ( W | \widehat{W} ) \leq 1 + P^{(n)}_e n R $
+
+所以 
+\begin{align*}
+nR & = H(W) \\
+& = H(W | \widehat{W}) + I(W; \widehat{W}) \\
+& \leq 1 + P^{(n)}_e n R + I(X^n ; Y^n) \\
+& \leq 1 + P^{(n)}_e n R + nC
+\end{align*}
+即 $ P_e = {1 \over n}P_e^{(n)} \geq {1 \over \log J}(R - C - {1 \over n}) $
+\end{enumerate}
+
+\end{document}
+
+
+

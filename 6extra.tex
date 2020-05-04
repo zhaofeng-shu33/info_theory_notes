@@ -1,0 +1,85 @@
+\documentclass{article}
+\usepackage{ctex}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{enumitem}
+\usepackage{mathtools}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+
+\def\E{\mathbb{E}}
+\def\Var{\textrm{Var}}
+\usepackage{hyperref}
+\usepackage{bm}
+\begin{document}
+\begin{enumerate}
+\item
+$ I(X; \widehat{X} ) = H(X) - H(X | \widehat{X}) = 1  - H(X | \widehat{X})$。 因此 $ \min I(X; \widehat{X}) $
+等价于极大化 $ H(X | \widehat{X}) $。对于有限的$D$，满足 $\E[ d(X, \widehat{X}) ] \leq D$ 必有$ \Pr(X = 0, \widehat{X} = 1) = 0 $
+因此 $ \Pr(\widehat{X} = 1 | X = 0) = 0 $。
+此时$ \E[ d(X, \widehat{X}) ] \leq D \Rightarrow \Pr(X = 1, \widehat{X} = 0 ) \leq D \Rightarrow
+\Pr( \widehat{X} = 0 | X = 1 ) \leq 2D $ 
+\begin{align*}
+H(X | \widehat{X}) & = -\sum_{x,\hat{x} \in \{0, 1\}} p(x, \hat{x}) \log { p(x, \hat{x}) \over p(\hat{x}) }  \\
+& = -\sum_{\hat{x} = 0, x \in \{0, 1\}} p(x, \hat{x}) \log { p(x, \hat{x}) \over p(\hat{x}) } \\
+& = P(\widehat{X} = 0) H(X | \widehat{X} = 0)
+\end{align*}
+设 $ q = \Pr( \widehat{X} = 0 | X = 1 )  $， 则 $ H(X | \widehat{X} ) = { 1 + q \over 2} h( { 1 \over 1 + q} ) $，
+其中 $h$ 是二元熵函数。
+可以证明$ H(X | \widehat{X} )  $ 是关于 $ q $ 的增函数，因此 当 $ D \leq { 1 \over 2} $ 时 取 $ q = 2 D$ $ H(X | \widehat{X} ) $ 达到最大。 当 $ D \geq { 1\over 2} $时， 取 $ q = 1 $， 此时$ H(X | \widehat{X} ) = 1 $。
+因此
+$$
+R(D) = \begin{cases}
+1 -   { 1 + 2D \over 2} h( { 1 \over 1 + 2D} ) & D \leq { 1 \over 2} \\
+0 & D > { 1 \over 2} 
+\end{cases}
+$$
+\item
+\begin{align*}
+   I(X; \widehat{X}) &  =  h(X) - h( X | \widehat{X} ) \\
+   & = h(X) - h( X - \widehat{X} | \widehat{X} ) \\
+   & \geq h(X) - h(X - \widehat{X}) 
+\end{align*}
+因为 $ \E[(X-\widehat{X})^2] = \E[d(X,\widehat{X})] \leq D$，由最大熵分布可得
+$ h(X - \widehat{X})  \leq { 1 \over 2} \log 2 \pi e D  \Rightarrow$
+$ I(X; \widehat{X}) \geq h(X) -  { 1 \over 2} \log 2 \pi e D $。 对不等式左边关于转移概率取最小值即得
+$ h(X) -  { 1 \over 2} \log 2 \pi e D  \leq R(D)$。
+
+对于上界，考虑$ \widehat{X} = \frac{ \sigma^2 - D }{ \sigma^2} (X + Z)$， 其中 $ Z \sim N(0, 
+{ D \sigma^2 \over \sigma^2 - D}) $，且与 $X$ 相互独立。
+则 
+\begin{align*}
+I(X; \widehat{X}) & = h(\widehat{X}) - h(\widehat{X} | X ) \\
+& = h(\widehat{X})  - h ( \frac{ \sigma^2 - D }{\sigma^2} Z ) \\
+& = h(\widehat{X})  - {1 \over 2} \log 2\pi e {(\sigma^2 - D) D \over \sigma^2}
+\end{align*}
+因为 $\E[\widehat{X}] = 0, \E[\widehat{X}^2] = \sigma^2 - D $
+所以 $  h(\widehat{X})  \leq { 1 \over 2} \log 2\pi e (\sigma^2 - D) \Rightarrow R(D) \leq I(X;\widehat{X}) \leq {1\over 2}\log 
+{\sigma^2 \over D}$
+
+因为在相同方差条件下高斯信源$R(D)$ 最大，相同失真度下需要更多比特编码，因此更难描述。
+\item
+由Shannon 率失真下界 $ R(D) \geq H(X) - \phi(D) $ 。 对于 $ X$ 是均匀分布且失真矩阵各行各列互为排列组合，
+可取到下界。这里 $\phi(D) = \max_{\bm{p}} H(\bm{p}) $ 满足约束 $ \sum_{ i = 1 }^m p_i = D $
+且 $ \sum_{ i = 1}^{2m} p_i = 1 $。当 $ D \geq {1 \over 2}$ 时，取分布 $ p_i = {1 \over 2m} $ 此时
+$ \phi(D) = H(X) \Rightarrow R(D) = 0 $；当 $ D < { 1 \over 2} $ 时， 取分布
+$ p^*_i = \begin{cases} {D \over m}, & i=1, \dots, m\\
+{1-D \over m}, & i=m+1, \dots, 2m 
+\end{cases}
+$。由 $D(\bm{p} || \bm{p}^*) \geq 0 \Rightarrow H(X) \leq -D \log { D \over m} - (1-D) \log {1-D \over m} $ 。
+因此
+$$
+R(D) = \begin{cases} \log(2m) + D \log { D \over m} + (1-D) \log {1-D \over m}, & D <{1 \over 2}\\
+0, & D \geq { 1 \over 2} \end{cases}
+$$
+\item 
+降低了$R(D)$，因为参数空间变大了。
+\item
+根据最大熵原理， 
+$f(x) = \exp[-\lambda_0 - \lambda_1 x -\lambda_2 \ln x] = x^{-\lambda_2} \exp[-\lambda_0 - \lambda_1 x]
+$
+其中参数$\lambda_i, i=0,1,2$ 根据约束条件 $\int xf(x) dx = \alpha_1, \int (\ln x) f(x) dx = \alpha_2, \int f(x) = 1 $ 确定。
+\end{enumerate}
+
+\end{document}
+
+
+

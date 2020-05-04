@@ -1,0 +1,243 @@
+\documentclass{article}
+\usepackage{ctex}
+\usepackage{bm}
+\usepackage{enumitem}
+\usepackage{amsmath,amsthm,amsfonts,amssymb}
+\usepackage{titleps}
+\newtheorem{definition}{定义}
+\newtheorem{thm}{定理}
+\newtheorem{pro}{命题}
+\newtheorem{cor}{推论}
+\def\P{\textbf{P}}
+\def\E{\mathbb{E}}
+% redefine \makeheadrule
+\newpagestyle{ch2}{\sethead{}{\thepage}{信息论}
+\def\makeheadrule{
+\rule[-.3\baselineskip]{\linewidth}{1pt}
+\hskip-\linewidth\rule[-.4\baselineskip]{\linewidth}{0.5pt}}
+}
+\begin{document}
+\pagestyle{ch2}
+\begin{enumerate}
+\item 熵的性质
+
+离散熵的定义为
+\begin{definition}
+随机变量$X\sim p(x),p(x_i)=p_i,i=1,\dots,n,x_i \in \mathcal{X}=\{x_1,\dots,x_n\}$,
+$$
+H(p_1,\dots,p_n)\triangleq -\sum_{i=1}^n p_i \log p_i = \E[\log p(X)]
+$$
+其中$\log$以2为底，熵的单位是比特。
+\end{definition}
+熵函数的性质：
+\begin{itemize}
+\item 非负性
+\item 是$n$的增函数
+\item 可加性 $$H(p_1,p_2,\dots,p_n)=H(\sum_{i=1}^k p_i,p_{k+1},\dots,p_n)+\sum_{i=1}^k p_i H(p'_1,\dots,p'_k)$$
+其中$p'_i=p_i/\sum_{i=1}^k p_i$
+\item 对称性，若$\sigma$为$1,\dots,n$上的一个置换，则：
+$$H(p_1,\dots,p_n)=H(p_{\sigma(1)},\dots,p_{\sigma(n)}) $$
+\item 称$h(p)\triangleq H(p,1-p)$为二元熵函数，易证$h(p)$是上凸函数。一般地，设$\textbf{P}=(p_1,\dots,p_n)$,
+所有长为$n$的概率向量$\textbf{P}$组成一个凸域$D$。利用$-p\log p$函数的上凸性可以证明$\forall \textbf{P},\textbf{P}'\in D$有
+$$H(\lambda \textbf{P}+(1-\lambda)\textbf{P})\geq \lambda H(\textbf{P})+(1-\lambda) H(\textbf{P}')$$
+即$H(\textbf{P})$是$\textbf{P}$的上凸函数。
+\end{itemize}
+\item 联合熵和条件熵
+\begin{definition}
+一对离散型随机变量$(X,Y)$，联合分布为$p(x,y)$,它们的联合熵为
+$$H(X,Y)\triangleq -\sum_{\substack{x\in \mathcal{X} \\ y\in \mathcal{Y}}} p(x,y)\log p(x,y) = -\E[\log p(X,Y)]$$
+\end{definition}
+\begin{definition}
+$Y$对于$X$的条件熵定义为
+\begin{align*}
+H(Y|X)\triangleq & \E_X[H(Y|X=x)] \\
+= & \sum_{x\in \mathcal{X}} p(x)H(Y|X=x)\\
+= & \sum_{x\in \mathcal{X}} p(x)[-\sum_{y\in \mathcal Y}p(y|X=x)\log p(y|X=x)] \\
+= & -\sum_{x\in \mathcal{X},y\in \mathcal{Y}} p(x,y)\log p(y|X=x)\\
+= & -\E_{X,Y}[\log p(Y|X)]
+\end{align*}
+\end{definition}
+
+关系式：
+\begin{itemize}
+\item $H(X,Y)=H(X)+H(Y|X)=H(Y)+H(X|Y)$
+\begin{proof}
+\begin{align*}
+H(X,Y)= & -\sum_{x\in \mathcal{X},y\in \mathcal{Y}} p(x,y)\log p(x,y)\\
+= & -\sum_{x\in \mathcal{X},y\in \mathcal{Y}} [p(x,y)\log p(y|X=x)+p(x,y)\log p(x)]\\
+= & -\sum_{x\in \mathcal{X},y\
+in \mathcal{Y}} p(x,y)\log p(y|X=x)-\sum_{x\in \mathcal{X}} p(x)\log p(x)\\
+= & H(Y|X)+H(X)
+\end{align*}
+\end{proof}
+\item 记$H(X_1 | X_0)=H(X_1)$,则有
+$$
+H(X_1,\dots,X_n)=\sum_{i=1}^n H(X_i | X_1,\dots, X_{i-1})
+$$
+\end{itemize}
+\item 相对熵
+\begin{definition}
+设$p(x),q(x)$是$\mathcal{X}$中字母表相同的两个概率分布，则它们的相对熵定义为：
+$$
+D(p||q)\triangleq \sum_{x\in \mathcal{X}} p(x)\log\frac{p(x)}{q(x)}
+= \E_X[\log\frac{p(X)}{q(X)}]
+$$
+\end{definition}
+\begin{thm}
+$D(p||q)\geq 0$，等号成立当且仅当$p=q$
+\end{thm}
+\begin{proof}
+由$-\log p$函数的下凸性质，
+\begin{align*}
+D(p||q) =& \E_{X}[ -\log\frac{q(X)}{p(X)}],\text{by Jensen's Inequality} \\
+\geq &  -\log\left(\E_{X} [\frac{q(X)}{p(X)}]\right)\\
+= & 0
+\end{align*}
+由 Jensen 不等式的取等条件，$\frac{p}{q}$应为常数
+\end{proof}
+利用相对熵的非负性，我们可以证明
+\begin{cor}
+设$X$是在字母表$\mathcal{X}$上取值的随机变量，则$H(X)\leq \log|\mathcal{X}|$,等号成立当且仅当$X$是均匀分布。
+\end{cor}
+\begin{proof}
+设$u$是$\mathcal{X}$上的均匀分布，则有$D(X|u)\geq 0 \Rightarrow H(X)\leq \log|\mathcal{X}|$
+\end{proof}
+
+相对熵$D(p||q)$的下凸性可以总结为以下三点：
+\begin{itemize}
+\item $q$固定，由 $t\log t$的下凸性可以得到
+$$
+D(\lambda p+(1-\lambda)p'||q)\leq \lambda D(p||q)+(1-\lambda)D(p'||q) 
+$$
+\item $p$固定，由 $-\log t$的下凸性可以得到
+$$
+D(p||\lambda q+(1-\lambda)q')\leq \lambda D(p||q)+(1-\lambda)D(p||q') 
+$$
+\item 二元凸性
+$$
+D(\lambda p+(1-\lambda)p'||\lambda q+(1-\lambda)q')\leq \lambda D(p||q)+(1-\lambda)D(p'||q') 
+$$
+\begin{proof}
+由对数和不等式
+\begin{equation}
+\sum_{i=1}^n a_i\log \frac{a_i}{b_i} \geq (\sum_{i=1}^n a_i)\log \frac{\sum_{i=1}^n a_i}{\sum_{i=1}^n b_i}
+\end{equation}
+\begin{align*}
+D(\lambda p+(1-\lambda)p'||\lambda q+(1-\lambda)q') = & \sum_{x\in \mathcal{X}} (\lambda p(x)+(1-\lambda)p'(x))\log \frac{\lambda p(x)+(1-\lambda)p'(x)}{\lambda q(x)+(1-\lambda)q'(x)}\\
+\leq & \sum_{x\in \mathcal{X}} [\lambda p(x)\log \frac{p(x)}{q(x)}+(1-\lambda) p'(x)\log \frac{p'(x)}{q'(x)}]\\
+=& \lambda D(p||q) + (1-\lambda)D(p'||q')
+\end{align*}
+\end{proof}
+\end{itemize}
+\item 互信息
+\begin{definition}
+设$(X,Y)\sim p(x,y),x\in \mathcal{X},y\in \mathcal{Y}$, $X,Y$的互信息
+定义为
+$$
+I(X;Y)\triangleq \sum_{\substack{x\in \mathcal{X} \\ y\in \mathcal{Y}}} p(x,y)\log \frac{p(x,y)}{p(x)p(y)} 
+$$
+\end{definition}
+互信息量有如下的性质：
+\begin{itemize}
+\item $I(X;Y)=D(p(x,y)||p(x)p(y))\Rightarrow I(X,Y)\geq 0$且 
+$I(X;Y)=0 \iff p(x,y)=p(x)p(y)$
+\item $I(X;Y)=H(X)-H(X|Y)=H(Y)-H(Y|X)=H(X)+H(Y)-H(X,Y)$
+\item $I(X;Y|Z)=0 \iff p(x,y|z)=p(x|z)p(y|z)$($X,Y$关于$Z$条件独立)$\iff  X\rightarrow Z \rightarrow Y$ 构成马氏链
+\item 互信息的链式法则
+$$ I(X_1,\dots,X_n;Y)=\sum_{i=1}^n I(X_i;Y|X_1,\dots,X_{i-1})
+$$
+\begin{proof}
+\begin{align*}
+I(X_1,\dots,X_n;Y) = & H(X_1,\dots,X_n)- H (X_1,\dots,X_n | Y )\\
+= & \sum_{i=1}^n H(X_i|X_1,\dots,X_{i-1})-\sum_{i=1}^n H(X_i|X_1,\dots, X_{i-1},Y)\\
+= & \sum_{i=1}^n I(X_i;Y|X_1,\dots,X_{i-1})
+\end{align*}
+\end{proof}
+\end{itemize}
+
+互信息$I(X;Y)$可以看成是$p(x),p(y|x)$的泛函数：
+$$
+I(X;Y)=\sum_{\substack{x\in \mathcal{X}\\ y\in \mathcal{Y}}} p(x)p(y|x) \log \frac{p(y|x)}{\sum_{x\in \mathcal{X}} p(x)p(y|x)}
+$$
+关于互信息的凸性可以总结为以下两点：
+\begin{itemize}
+\item $I(X;Y)$关于$p(x)$上凸
+\item $I(X;Y)$关于$p(y|x)$下凸。
+\end{itemize}
+数据处理不等式：设 $ P_Y = P_{Y|X}\circ P_X, Q_Y = P_{Y|X} \circ Q_X $
+则 $D(P_X || Q_X) \geq D(P_Y || Q_Y) $。
+\begin{proof}
+$\E_{XY}[\log \frac{P_{XY}}{Q_{XY}}] = 
+\E_{XY}[\log \frac{P_{Y|X}}{Q_{Y|X}} + \log \frac{P_X}{Q_X}]$
+因为 $Q_{Y|X} = P_{Y|X} \Rightarrow \E_{XY}[\log \frac{P_{XY}}{Q_{XY}}]  = D(P_X || Q_X)$
+又
+\begin{align*}
+\E_{XY}[\log \frac{P_{XY}}{Q_{XY}}] = &
+\E_{XY}[\log \frac{P_{X|Y}}{Q_{X|Y}} + \log \frac{P_Y}{Q_Y}] \\
+& = \E_{Y}[D(P_{X|Y} || Q_{X|Y})] + D(P_Y || Q_Y) \\
+& \geq D(P_Y || Q_Y)
+\end{align*}
+所以有$D(P_X || Q_X) \geq D(P_Y || Q_Y) $。
+\end{proof}
+\item 微分熵
+设$X$是连续型随机变量，$X$的微分熵定义为：
+\begin{equation}\label{eq:differential_entropy}
+h(X)\triangleq -\int_{\mathbb{R}} p(x)\log p(x)dx
+\end{equation}
+$X^{(\Delta)}$ 是$X$按区间长度为$\Delta$离散的结果。
+则 $H(X^{(\Delta)})+\log \Delta \to h(X)$
+
+
+微分熵可正可负
+
+常见分布的微分熵
+\begin{pro}
+\begin{enumerate}[label=(\alph*)]
+\item 区间$(0, a)$ 上的均匀分布的微分熵为 $ \log a $， 可正可负。
+\item 方差为$\sigma^2$的高斯分布微分熵的大小为$\frac{1}{2}\log (2\pi e \sigma^2)$，协方差矩阵为$\Sigma$的联合高斯分布微分熵大小为${1\over 2} \log(\det (2\pi e \Sigma ))$
+\item 均值为$\frac{1}{\lambda}$的指数分布的微分熵为 $\log e-\log \lambda$
+\end{enumerate}
+\end{pro}
+\begin{proof}
+\begin{enumerate}[label=(\alph*)]
+\item
+不妨设高斯分布$X$的均值为0，概率密度函数为$p(x)$则
+\begin{align*}
+h(X) = & -\int_{\mathbb{R}} p(x)\log\left(\frac{1}{\sqrt{2\pi \sigma^2}}\exp(-\frac{x^2}{2\sigma^2})\right)dx\\
+=& \frac{1}{2}\log(2\pi \sigma^2)+\frac{\log e}{2\sigma^2} \int_{\mathbb{R}} x^2p(x)dx\\
+=& \frac{1}{2}\log(2\pi e\sigma^2)
+\end{align*}
+\item 
+$$
+h(X)=-\int_{0}^{\infty} \lambda e^{-\lambda x}(\log \lambda -\lambda x \log e)dx=\log e-\log \lambda
+$$
+\end{enumerate}
+\end{proof}
+
+\item 相对熵和互信息（连续情形）
+\begin{definition}
+若$X\sim p(x),Y\sim q(y)$连续,则$X$和$Y$的相对熵为
+\begin{equation}
+D(p||q)\triangleq \int_{\mathbb{R}} p(x)\log \frac{p(x)}{q(x)}dx
+\end{equation}
+$X$和$Y$的互信息为：$I(X;Y)=D(p(x,y)||p(x)q(y))$
+\end{definition}
+
+常见的连续型概率分布可以看成是某种条件下的最大熵分布：
+\begin{thm}
+对概率密度族$\mathcal{P}$，若存在$p_0(x)\in \mathcal{P}$，使得
+$$\forall p(x)\in \mathcal{P},-\int_{\mathbb{R}} p(x)\log p_0(x)dx =h_0
+$$
+ 是一个与$p(x)$无关的常数，则$p_0(x)$为最大熵分布，
+$h_0$为最大熵。
+\end{thm}
+\begin{proof}
+由相对熵的非负性得：
+$$
+-\int_{\mathbb{R}} p(x)\log p(x)dx \leq -\int_{\mathbb{R}} p(x)\log p_0(x)dx=h_0
+$$
+等号成立当且仅当$p(x)$与$p_0(x)$几乎处处相等。
+\end{proof}
+\end{enumerate}
+\end{document}
+

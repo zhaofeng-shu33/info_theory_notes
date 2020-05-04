@@ -1,0 +1,123 @@
+% Homework template for Inference and Information
+% UPDATE: September 26, 2017 by Xiangxiang
+\documentclass[a4paper]{article}
+\usepackage{ctex}
+\ctexset{
+proofname = \heiti{证明}
+}
+\usepackage{amsmath, amssymb, amsthm}
+% amsmath: equation*, amssymb: mathbb, amsthm: proof
+\usepackage{moreenum}
+\usepackage{mathtools}
+\usepackage{url}
+\usepackage{bm}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{booktabs} % toprule
+\usepackage[mathcal]{eucal}
+\usepackage[thehwcnt = 4、5]{iidef}
+\usepackage{makecell}
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\thecourseinstitute{清华大学深圳研究生院}
+\thecoursename{应用信息论}
+\theterm{2018年春季学期}
+\hwname{习题}
+\slname{\heiti{解}}
+\begin{document}
+\courseheader
+\name{赵丰}
+
+
+\begin{enumerate}[label = \arabic*]
+  \setlength{\itemsep}{3\parskip}
+\item 设有离散无记忆信道，设$\bar{I}(X,Y)$ 是输入输出的函数，为一随机变量，取值为
+$\bar{I}(a_i, b_j) = \log { P(X = a_i, Y = b_j) \over P(X=a_i) P(Y=b_j) }$，取该值的概率为$P(X = a_i, Y=b_j)$。
+易知 $X$与$Y$的互信息为 $\bar{I}(X,Y)$的均值。证明当$\Var[\bar{I}(X, Y)] = 0$时， $\E[ \bar{I}(X; Y) ] $ 达到信道
+容量。
+\begin{solution}
+$ \Var[\bar{I}(X, Y)] = 0 \Rightarrow \bar{I}(X,Y)  = C' $ 因此 $I(X=a_i; Y) = \sum_{j} P(Y=b_j | X = a_i) \bar{I}(a_i, b_j) = C' $
+由离散无记忆信道的信道容量定理可得平均互信息达到信道容量。 
+\end{solution}
+  \item 设某信道的输入$X$ 取值为 $\{ +1, -1 \}$, 又信道有加性噪声$n$， 其分布密度为 $ p(n) = \begin{cases}
+  { 1 \over 4} , & \abs{n} \leq 2 \\ 0, & \abs{n} > 2 \end{cases}$， 求信道容量。
+  \begin{solution}
+  \begin{align*}
+  I(X;Y) & = H(Y) - H(Y|X) \\
+  & = H(Y) - 2
+ \end{align*}
+ 当 $X\sim Bern({1 \over 2})$ 时，
+ $ p(y) =  \begin{cases} { 1\over 8}, & 1 \leq \abs{y}\leq 3 \\
+ { 1 \over 4}, & \abs{y} < 1 \\
+ 0, & \abs{y} > 3 
+ \end{cases} $
+ 在这种情形下 $ H(Y) = 2.5 \Rightarrow I(X; Y) = 0.5$
+
+ 对于 $\Pr( X = 1 ) = p $ 的情形， $ p(y) = \begin{cases} { 1 \over 4 } p, & 1 \leq y \leq 3 \\ {1 \over 4} (1-p), & -3 \leq y \leq -1 
+ \end{cases} $， 其余与 $ p = \frac{1}{2} $ 相同。 则
+ $ I(X;Y) = {1 \over 2} h(p) $, 其中 $h(p)$ 为二元熵函数。因此当 $ p = { 1 \over 2} $时$I(X;Y)$最大, 达到信道容量 $ 
+ C = {1 \over 2} $。
+ \end{solution}
+ 
+\item 设$X$ 和 $Y$ 为信道的输入和输出， 两者均取值于集合 $ A = \{ a_1, a_2, \dots, a_K\}$。
+已知 $ p ( x = a_k ) = p_k, p( y = a_j | x = a_k ) = p_{kj} $， 定义 $ P_e = \displaystyle\sum_{k} p_k \sum_{j \neq k} p_{kj} $
+求证：
+\begin{equation}\label{eq:HXY}
+H(X|Y) \leq P_e \log (K - 1) + H(P_e)
+\end{equation}
+其中 $ H(P_e) $ 是关于 $P_e$ 的二元熵函数。
+\begin{proof}
+设 $p( y = a_j | x = a_k )$ 描述了一个离散无记忆的信道， $X$ 是信道输入， $Y$ 是信道输出， 现设 $\hat{X} = Y$， 即用信道输出值来解码 $X$， 错误概率为 $P_e$， 由 Fano 不等式可知 ~\eqref{eq:HXY} 成立。
+\end{proof}
+\item 已知信道转移概率矩阵如表~\ref{tab:transfer_matrix} 所示， 求此信道的信道容量。
+\begin{table}[!ht]
+\centering
+\begin{tabular}{c|cccc}
+\diaghead(-1, 1){xx}{x}{y} & 0 & 1 & 2 & 3 \\
+\hline
+0 & 1/3 & 1/3 & 1/6 & 1/6 \\
+1 & 1/6 & 1/3 & 1/6 & 1/3 \\
+\end{tabular}
+\caption{信道转移概率矩阵}\label{tab:transfer_matrix}
+\end{table}
+\begin{solution}
+由准对称信道的信道容量定理， 当输入分布为 $Bern( { 1 \over 2 } ) $ 时，达到信道容量。
+可以求出此时 $ C = I(X; Y) = H(Y) - H(Y|X) = 0.041 $
+\end{solution}
+\item 设有信道，输入 $X$ 的字母表为： $\{0, 1, 2, \dots, K-1\}$, 噪声为独立加性噪声 $Z$， $Z$ 的取值
+也在 $\{0, 1, 2, \dots, K-1\}$ 的集合中， 但两者相加为模 $K$ 相加， 即 输出 $ Y = X \bigoplus Z $（模 $K$），试求
+此信道的信道容量。
+\begin{solution}
+此 DMC 信道是对称信道，转移概率矩阵是 Toeplitz 矩阵。行元素为 $P_Z(0), P_Z(1), \dots P_Z(K-1) $， 由DMC对称信道的
+信道容量公式得 $ C = \log (K) - H(Z) $
+\end{solution}
+\item 设有输入为 $X$ 输出为 $Y = [Y_1, Y_2 ] $ 的高斯信道， 其中 $Y_1 = X + Z_1, Y_2 = X + Z_2 $, $X$ 的最大功率受限 为 $P$, $(Z_1,Z_2) \sim N_2(0, K)$, 其中 $ K = \begin{bmatrix} \sigma^2 & \rho \sigma^2 \\ \rho \sigma^2 & \sigma^2 \end{bmatrix} $，试求：
+\begin{enumerate}[label=\arabic*)]
+\item $ I(X;Y_1, Y_2) = I(X; Y_1) + I(X; Y_2) - I(Y_1; Y_2) + I(Y_1; Y_2 | X) $
+\item $ \rho = 1 $ 时的信道容量。
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}[label=\arabic*)]
+\item
+\begin{align*}
+ I(X; Y_1, Y_2 ) & = H(X) + H(Y_1, Y_2) - H(X, Y_1, Y_2) \\
+ I(X; Y_1) & = H(X) + H(Y_1) - H(X, Y_1) \\
+ I(X; Y_2) & = H(X) + H(Y_2) - H(X, Y_2) \\
+ I(Y_1; Y_2) & = H(Y_1) + H(Y_2) - H(Y_1, Y_2) \\
+ I(Y_1; Y_2 | X ) & = H(Y_1 | X) + H(Y_2 | X) - H(Y_1, Y_2 | X) \\
+ & = H(X, Y_1) + H(X, Y_2) - H(X, Y_1, Y_2) - H(X)
+\end{align*}
+直接计算有 $ I(X;Y_1, Y_2) = I(X; Y_1) + I(X; Y_2) - I(Y_1; Y_2) + I(Y_1; Y_2 | X) $。
+\item $ \rho = 1 $ 时的信道容量。
+$ \rho = 1 $时 $Z_1$ 与 $Z_2 $ 几乎处处相等 $ \Rightarrow Y_1 \overset{as}{=} Y_2$。
+由 1) 可以得到 $ I(X; Y_1, Y_2) = I(X; Y_1) $ 由已知结论， $ C = { 1\over 2} \log (1+ { P \over \sigma^2})$
+\end{enumerate}
+\end{solution}
+\end{enumerate}
+\end{document}
+
+
+%%% Local Variables:
+%%% mode: late\rvx
+%%% TeX-master: t
+%%% End:

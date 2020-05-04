@@ -1,0 +1,36 @@
+\documentclass{ctexart}
+    \usepackage{hyperref}
+\begin{document}
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{cp{4cm}p{4cm}}
+        \hline
+            & 优点 & 缺点 \\
+        \hline
+        LDPC & 逼近香农限 \newline
+               具有译码复杂度低 \newline
+               可并行译码 \newline
+               译码错误可检测
+             & 硬件资源需求大 \newline
+               编码复杂造成额外消耗 \\
+        \hline
+        Turbo & 逼近香农限 \newline
+        & 迭代次数多 \newline 译码时延较大 \newline
+        受限于5G高速率 \newline 和低时延场景 \\
+        \hline
+        Polar & 逼近香农限 \newline
+        编码译码简单 \newline
+        纠错性能好 \newline
+        商业化设备成本低 & 在短码上无法实现 \\
+        \hline
+    \end{tabular}
+    \caption{三种编码的优缺点\cite{a}}
+\end{table}
+投票的轮次，一共两轮，1轮是86是当年10月发生在葡萄牙，一轮是87是11月在美国。
+86次会议，联想在数据短码上弃权、控制码投票高通，由于数据短码存在争议，本轮投票未确定数据短码最终方案。
+87次会议，联想在数据短码上投票华为，但最终华为以微弱的票数不敌高通，没拿下数据短码。\cite{b}
+\begin{thebibliography}{9}
+    \bibitem{a} \href{http://www.eefocus.com/communication/373020/r1}{趣科技 | LDPC与Polar码并非有前世恩怨，只是被卷进帮派之战}
+    \bibitem{b} \href{https://www.zhihu.com/question/276752269}{如何看待 5G 标准上联想的投票？}
+\end{thebibliography}
+\end{document}

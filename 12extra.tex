@@ -1,0 +1,143 @@
+\documentclass{article}
+\usepackage{ctex}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{enumitem}
+\usepackage{diagbox}
+\begin{document}
+\begin{enumerate}
+\item
+$P(X)$只和赛的场次有关，每个赛的场次的不同可能数如下表所示：
+\begin{table}[!ht]
+\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+场次数 & 4 & 5 & 6 & 7 \\
+\hline
+不同组合数 & 2 & $2C^1_4$ & $2C^2_5$ & $2C^3_6$ \\
+\hline
+概率 & $\frac{1}{35}$ & $\frac{4}{35}$ & $\frac{10}{35}$ & $\frac{20}{35}$ \\
+\hline
+\end{tabular}
+\end{table}
+
+因此
+$$
+H(X) = 2 \times(\frac{1}{2^4} \log 2^4 +\frac{C^1_4}{2^5}\log 2^5 +\frac{C^2_5}{2^6}\log 2^6 +\frac{C^3_6}{2^7}\log 2^7) = \frac{93}{16}
+$$
+$$
+H(Y) = -(\frac{1}{35}\log \frac{1}{35} + \frac{4}{35} \log \frac{4}{35} + \frac{10}{35} \log \frac{10}{35} + \frac{20}{35} \log \frac{20}{35})=1.48
+$$
+因为$p(y|x)=0\Rightarrow$
+$$
+H(Y|X)=0\Rightarrow H(X,Y)=H(X)=\frac{93}{16}
+$$
+$$
+H(X|Y)=H(X,Y)-H(Y)=4.33
+$$
+\item 
+\item 
+$I(X;Y)<I(X;Y|Z)$不是恒等式，设$X,Y\sim B(\frac{1}{2})$且$X$与$Y$相互独立，$Z$是$X$与$Y$的亦或。
+则$I(X;Y)=0,H(X|Z)-H(X|Y,Z)=1-0=1\Rightarrow I(X;Y|Z)=1>I(X;Y)$
+
+$I(X;Y)=H(X)-H(X|Y)\geq 0\Rightarrow H(X|Y)\leq H(X)$
+
+若取$Y=X,H(X|Y=y)=0 \leq H(X)$
+又设$X,Y$的联合分布如下表所示：
+
+\begin{table}[!ht]
+\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+ $X$ & 1 & 1 & 0 & 0 \\
+\hline
+ $Y$ & 0 & 1 & 1 & 0 \\
+\hline
+概率 & $\frac{1}{5}$ & $\frac{1}{5}$ & $\frac{1}{5}$ & $\frac{2}{5}$ \\
+\hline
+\end{tabular}
+\end{table}
+
+$H(X)=-\frac{3}{5}\log\frac{3}{5}-\frac{2}{5}\log\frac{2}{5}=0.97$
+$H(X|Y=1)=1>H(X)$
+因此$H(X|Y=y)\leq H(X)$不是恒等式。
+\item
+\begin{enumerate}[label=(\alph*)]
+\item $H(X,Y|Z)=H(X|Z)+H(Y|X,Z)\geq H(X|Z)$; 等式成立当且仅当$H(Y|X,Z)=0$，即$Y=f(X,Z)$
+\item 由互信息的链式法则$I(X,Y;Z)=I(X;Z)+I(Y;Z|X)\geq I(X;Z)$，等式成立当且仅当$I(Y;Z|X)=0$，即$Y,Z$关于$X$条件独立。
+\item $H(X,Y,Z)-H(X,Y)=H(Z|X,Y)=H(Z|X)-I(Z;Y|X)\leq H(Z|X) = H(X,Z)-H(X)$，等式成立当且仅当$I(Y;Z|X)=0$，即$Y,Z$关于$X$条件独立。
+\item 不等式左端减右端得:
+\begin{align*}
+I(X;Z|Y)-&[I(Z;Y|X)-I(Z;Y)+I(X;Z)] =  H(Z|Y)-H(Z|Y,X)\\
+-&(H(Z|X)-H(Z|X,Y))+(H(Z)-H(Z|Y))-(H(Z)-H(Z|X))=0
+\end{align*}
+\end{enumerate}
+\item 
+\begin{align*}
+D(p_2 || p_1) = & -\frac{1}{2} \log(1-\rho^2) \\
+D(p_1 || p_2) = &  \frac{1}{2} \log(1-\rho^2) + \frac{1}{2}\log e [\frac{2\rho^2}{1-\rho^2}]
+\end{align*}
+$D(p || q)=D(q || p)$的例子：$p\sim B(\frac{1}{4}),q \sim B(\frac{3}{4})$
+\item 
+\begin{align*}
+\text{RHS}=&\sum_{x\in \mathcal{X}} P_X (x)\sum_{y \in \mathcal{Y}} P_{Y|X=x}(y)\log
+\frac{P_{Y|X=x}(y)}{P_{Y|X={x_0}}(y)}-\sum_{y \in \mathcal{Y}} P_{Y}(y)\log
+\frac{P_{Y}(y)}{P_{Y|X={x_0}}(y)}\\
+=&\sum_{x\in \mathcal{X}} P_X (x)\sum_{y \in \mathcal{Y}} P_{Y|X=x}(y)\log
+{P_{Y|X=x}(y)}-\sum_{y \in \mathcal{Y}} P_{Y}(y)\log
+{P_{Y}(y)}\\
+=&H(Y)-H(Y|X)\\
+=&I(X;Y)
+\end{align*}
+\item
+\begin{enumerate}[label=(\alph*)]
+\item 
+\item 
+当$0\leq x\leq d, \log \frac{1}{d}\leq -\log p(x)$，所以
+\begin{equation}
+\int_{0}^d p(x)dx \log\frac{1}{d} \leq  -\int_0^{\infty} p(x)\log p(x)dx
+\end{equation}
+\item from (a)
+\end{enumerate}
+\item
+\begin{enumerate}[label=(\alph*)]
+\item $H(Z|X)=E_X[H(Z|X=x)]=E_X[H(Y|X=x)]=H(Y|X)$,当$X$与$Y$独立时，$H(Y)=H(Y|X)=H(Z|X)\leq H(Z)$,由$X$和$Y$的对称性可得:$H(X)\leq H(Z)$
+\item $X,Y$的联合概率分布如表\ref{table:jd}所示。
+
+\begin{table}[!ht]
+\centering
+\begin{tabular}{c|c|c}
+\diagbox{$Y$}{$X$} & 0 & 1 \\
+\hline
+0 & 0.1 & 0.4 \\
+\hline
+1 & 0.4 & 0.1 \\
+\hline
+\end{tabular}
+\caption{$X,Y$的联合概率分布}\label{table:jd}
+\end{table}
+
+可以求出$H(X)=H(Y)=1,Z\sim \begin{pmatrix}
+0 & 1 & 2\\
+0.1 & 0.8 & 0.1
+\end{pmatrix},H(Z)=0.92
+$
+\item $X+Y$ 可看作$f(X,Y)$，因此$H(Z)\leq H(X,Y)\leq H(X)+H(Y)$。 $H(Z)=H(X)+H(Y)$的必要条件为 $X$与$Y$独立，
+$H(Z)=H(X,Y)$的条件是$(X,Y)$是$Z$的函数，当这两点同时满足时，$H(Z)=H(X)+H(Y)$。
+\end{enumerate}
+\item 前三条容易验证，对于第四条，
+\begin{align*}
+\rho(x,y)+\rho(y,z) = & H(X|Y)+H(Y|X)+H(Y|Z)+H(Z|Y)\\
+= & 2(H(X,Y)+H(Y,Z)-H(Y))-H(X)-H(Z),\text{由 4.(c)}\\
+\geq & 2H(X,Z)-H(X)-H(Z)\\
+= & H(X|Z)+H(Z|X) \\
+= & \rho(x,z)
+\end{align*}
+\item 当$\rho=-1$或$+1$时，$X=aY$,$a$是常数，符号与$\rho$相同。
+此时$I(X;Y)=h(X)$
+\item 使用 Lagrange 乘子法，可求出 $ p_i = { P_e \over m-1} $. 此时 $H(P) = -(1-P_e) \log(1-P_e)-P_e \log\frac{P_e}{m-1} $。
+由 Fano 不等式 $ H(P) \leq H(P_e) + P_e \log(m-1)$，达到Fano 不等式给出的 $H(P)$ 的最大值。
+\end{enumerate}
+\end{document}
+
+
+

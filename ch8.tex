@@ -1,0 +1,127 @@
+\documentclass{article}
+\usepackage{ctex}
+\usepackage{bm}
+\usepackage{enumitem}
+\usepackage{amsmath,amsthm,amsfonts,amssymb}
+
+\def\P{\textbf{P}}
+\def\E{\mathbb{E}}
+\usepackage{mathtools}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\def\X{\mathcal{X}}
+\def\Y{\mathcal{Y}}
+\def\W{\mathcal{W}}
+\usepackage{tikz}
+\begin{document}
+\section{多变量联合典型序列}
+随机向量 $(X_1, \dots, X_k) $ 的$\epsilon $ 典型 且长度为
+$n$ 的序列 $ (x_1, \dots, x_k) $ 所构成的集合 $ A_{\epsilon}^{(n)} $ 定义为
+$$
+A_{\epsilon}^{(n)} = \{ (x_1, \dots, x_k): \abs{ -{ 1 \over n} \log p(\bm{s}) - H(S)} < \epsilon,
+\forall S \subset \{X_1, \dots, X_k\}
+\}
+$$
+其中 $ p(\bm{s}) = \prod_{i=1}^n \Pr\{S_i = s_i\} $
+并记$ A_{\epsilon}^{(n)}(S) $ 为 $A_{\epsilon}^{(n)}$ 限制在 $S$ 上的典型集。
+
+性质：
+\begin{enumerate}
+\item 当$ n$ 充分大时，$ \abs{A_{\epsilon}^{(n)} } \geq 2^{-n(H(S)-2\epsilon)} $
+\begin{proof}
+当$ n$ 充分大时，有 $\Pr\{A_{\epsilon}^{(n)}(S)\} \geq 1 - \epsilon \geq 2^{-n \epsilon}$
+\begin{align}
+2^{-n \epsilon} & \leq \sum_{\bm{s} \in A_{\epsilon}^{(n)}(S)} p(\bm{s})  \\
+& \leq \sum_{\bm{s} \in A_{\epsilon}^{(n)}(S)} 2^{- n (H(S)-\epsilon)} \\
+& \leq \abs{A_{\epsilon}^{(n)}(S)} 2^{- n (H(S)-\epsilon)}
+\end{align}
+所以 $\abs{A_{\epsilon}^{(n)}(S)} \geq 2^{n(H(S) - 2\epsilon)}$
+\end{proof}
+\item 若 $ S_1, S_2 \subset \{ X^{(1)}, X^{(2)}, \dots, X^{(k)} \} $。 如果 $(\bm{s}_1, \bm{s}_2)
+\in A_{\epsilon}^{(n)}(S_1,S_2)$，则有：
+\begin{equation}
+\label{eq: s1_c_s2} 2^{-n(H(S_1 | S_2) + 2\epsilon)} \leq p(\bm{s}_1 | \bm{s}_2 ) \leq 2^{-n(H(S_1 | S_2) - 2\epsilon)}
+\end{equation}
+\begin{proof}
+\begin{align}
+2^{-n(H(S_1, S_2) + \epsilon)} & \leq p(\bm{s}_1, \bm{s}_2) \leq 2^{-n(H(S_1, S_2) - \epsilon)} \\
+2^{-n(H(S_2) + \epsilon)} & \leq p(\bm{s}_2) \leq 2^{-n(H(S_2) - \epsilon)} 
+\end{align}
+利用 $ p(\bm{s}_1 | \bm{s}_2) = \frac{p(\bm{s}_1, \bm{s}_2)}{p(\bm{s}_2)} $
+ 和 $ H(S_1 | S_2) = H(S_1,S_2) - H(S_2)$ 即可得证。
+\end{proof}
+\item 给定 $\bm{s}_2 \in A_{\epsilon}^{(n)}(S_2)$，记 $A_{\epsilon}^{(n)}(S_1 | \bm{s}_2)$ 为与给定
+序列 $\bm{s}_2 $  构成联合典型 的所有序列的集合， 则
+\begin{align}
+\label{eq: s1s2Upper} \abs{A_{\epsilon}^{(n)}(S_1 | \bm{s}_2 ) }& \leq 2^{n ( H(S_1 | S_2) + 2\epsilon)} \\
+\label{eq: s1s2Lower}(1 - \epsilon)  2^{n ( H(S_1 | S_2) - 2\epsilon)} & \leq
+ \sum_{\bm{s_2}} p(\bm{s}_2)\abs{  A_{\epsilon}^{(n)}(S_1 | \bm{s}_2 ) }
+\end{align}
+\begin{proof}
+根据~\eqref{eq: s1_c_s2} 可得
+\begin{align*}
+1 & \geq \sum_{\bm{s}_1 \in A_{\epsilon}^{(n)}(S_1 | \bm{s}_2 ) } p(\bm{s}_1 | \bm{s}_2 ) \\
+& \geq 2^{-n(H(S_1 | S_2) + 2\epsilon)} \abs{ A_{\epsilon}^{(n)}(S_1 | \bm{s}_2 )}
+\end{align*}
+另一方面，由 $ 1 - \epsilon \leq \Pr\{  A_{\epsilon}^{(n)}(S_1, S_2) \} $ 可得
+\begin{align*}
+1 - \epsilon & \leq \sum_{\bm{s}_2} p(\bm{s}_2) \sum_{\bm{s}_1 \in A_{\epsilon}^{(n)}(S_1 | \bm{s}_2 ) } p(\bm{s}_1 | \bm{s}_2 ) \\
+& \leq  \sum_{\bm{s}_2} p(\bm{s}_2) 2^{-n(H(S_1 | S_2) - 2\epsilon)} \abs{A_{\epsilon}^{(n)}(S_1 | \bm{s}_2 )}
+\end{align*}      
+\end{proof}
+\end{enumerate}
+\section{多接入信道(MAC)}
+$m $ 个发送器， 1 个接收器。以  $m = 2 $ 为例，
+信道构成 为 $ \{ \mathcal{X}_1, \mathcal{X}_2, p(y | x_1, x_2), \mathcal{Y} \} $。
+
+输入为 两个消息集 $ \mathcal{W}_i = \{ 1, 2, \dots, 2^{nR_i} \}, i = 1, 2 $。
+
+编码函数： $ X_i: \mathcal{W}_i  \to \X^n, i = 1, 2 $
+
+译码函数： $ g: \Y \to \W_1 \times \W_2 $。
+
+多接入信道编码为 $ ((2^{n R_1}, 2^{ n R_2}), n ) $ 码。
+\begin{itemize}
+\item 独立的二元对称信道， 容量区域为 $ \left\{(R_1, R_2) \Big\vert \begin{array}{c} 0 \leq R_1 \leq 1-H(p_1) \\
+0 \leq R_2\leq 1 - H(p_2) \end{array} \right\}$， 其中 $p_1, p_2 $ 分别是两个BSC 的错误概率。
+\item 二元乘法信道， $ Y = X_1 X_2 $, 容量区域为 
+$ \left\{(R_1, R_2) | R_1\geq 0, R_2\geq 0, R_1 + R_2 \leq 1 \right\}$
+\item 二元擦除多接入信道 $Y = X_1 + X_2 $， 对应二元输入有三元输出。当 $Y = 1 $ 时，输入可能是$(0, 1) $ 或 $(1, 0)$。当 $R_1 = 1 $时， 可取 $ X_1 \sim Bern({ 1 \over 2 } ) $ 达到。此时将 $X_1 $
+视为噪声，将 $Y$的状态$Y=1$视为二进制擦除信道的中间态，则$X_2 $ 可达码率为 $ { 1 \over 2}$。用 $X_1 = Y - X_2 $ 即可解码 $X_1$。因此，容量区域为 $ \left\{(R_1, R_2)  | 0 \leq R_1 \leq 1, 0 \leq R_2\leq 1, R_1 + R_2 \leq {3 \over 2} \right\}$
+\item 高斯多接入信道的信道容量。固定$X_2$， $R_1$ 可达最大值 $ { 1 \over 2} \log(1 + \frac{P_1}{N})$；在 $R_1$ 保持不变的情况下，将 $X_1$ 视为 $X_2 $ 的噪声， 则噪声总功率为 $P_1+N$。
+因此 $X_2$ 可达速率为 $ { 1 \over 2} \log (1 + { P_2 \over N + P_1 } ) $ 
+对于两输入的高斯多接入信道， 容量区域为 
+$\{ (R_1, R_2) | 0 \leq R_1 \leq  { 1 \over 2} \log(1 + \frac{P_1}{N}),  0 \leq R_2 \leq  { 1 \over 2} \log(1 + \frac{P_2}{N}),
+R_1 + R_2 \leq { 1 \over 2} \log(1 + \frac{P_1 + P_2}{N})
+ \}$
+\end{itemize}
+\section{广播信道}
+1个发送器， $m $ 个接收器。
+\begin{description}
+\item [面向公众广播] 一个信息编码器，相同译码器独立译码
+\item [独立信息广播] 用户信息联合编码， 不同译码器独立译码
+\item [带公共信息的独立信息广播] 用户信息和公共信息联合编码，不同译码器独立译码
+\end{description}
+以 $ m = 2$ 为例，独立信息广播信道的信道构成为 $\{ \X, p(y_1, y_2 | x), \Y_1, \Y_2 \} $， 为 $ ( (2^{ n R_1}, 2^{n R_2}), n ) $
+码。
+\begin{itemize}
+\item 输入消息集为 $ \W_1 \times \W_2 = ( \{1, \dots, 2^{ n R_1 } \} \times \{1, \dots, 2^{ n R_2 } \} ) $
+\item 编码函数 $ X: \W_1 \times \W_2 \to \X^n $
+\item 译码函数 $ g_i : \Y_i^n \to \W_i, i = 1,2 $
+\end{itemize}
+对于带公共信息的广播信道， 信道构成与 独立信息广播信道相同，但输入的消息集多出公共部分 
+$ \W_0 = \{ 1, \dots, 2^{ n R_0 } \} $，为 $ ( (2^{ n R_0}, 2^{ n R_1}, 2^{n R_2}), n ) $
+码。
+\begin{itemize}
+\item 正交广播信道
+\item 独立二元对称广播信道
+\item 高斯广播信道
+\end{itemize}
+\end{document}
+
+
+
+
+
+
+

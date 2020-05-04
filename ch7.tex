@@ -1,0 +1,60 @@
+\documentclass{article}
+\usepackage{ctex}
+\usepackage{bm}
+\usepackage{enumitem}
+\usepackage{amsmath,amsthm,amsfonts,amssymb}
+
+\def\P{\textbf{P}}
+\def\E{\mathbb{E}}
+\usepackage{mathtools}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\def\X{\mathcal{X}}
+\def\Y{\mathcal{Y}}
+\usepackage{tikz}
+\newtheorem{definition}{定义}
+\newtheorem{theorem}{定理}
+\author{赵丰}
+\title{最大熵和最小鉴别原理}
+\begin{document}
+\maketitle
+最大熵原理问题的提法：
+某离散随机变量$X$，其概率分布$p(x)$ 未知，已知若干函数在 $p(x)$下的期望：
+$ \sum_{x \in \X} p(x) f_m(x) = C_m, m =1, 2, \dots, M$， 求最佳估计 $\hat{p}(x)$。
+
+求解原理是取概率分布的熵为目标函数
+$ H(X) = - \sum_{x \in \X} p(x) \log p(x)$, 而
+\begin{equation}
+\hat{p}(x) = \arg\max_{p(x)} H(X)
+\end{equation}
+
+欠定约束下最大熵分布满足如下形式：
+\begin{equation}\label{eq:Maximum_Entropy}
+\hat{p}(x) = \exp\left[ - \lambda_0 - \sum_{ m = 1 }^M \lambda_m f_m(x) \right]
+\end{equation}
+其中参数$\lambda_0, \lambda_i (i=1, \dots, M)$ 由 $M+1 $个约束条件确定（包含$\sum_{x \in \X} p(x) = 1$）。
+
+对于连续型随机变量，用积分代替求和，约束条件为
+
+$ \int_S p(x)=1, \int_S p(x) f_m(x) = C_m, m = 1, 2, \dots, M$
+则最大熵分布同~\eqref{eq:Maximum_Entropy}式。
+
+最小鉴别信息原理：欠定问题且有先验分布（$q(x)$）。
+
+取概率分布的鉴别信息（相对熵）为目标函数：$D(p || q) = \sum_{x \in \X} p(x) \log { p(x) \over q(x) } $
+\begin{equation}
+\hat{p}(x) = \arg \min_{p(x)} D( p || q)
+\end{equation}
+用 Lagrange 乘子法可以求出欠定约束下最小鉴别信息分布为满足如下形式：
+\begin{equation}\label{eq:Principle_of_Minimum_Discrimination_Information}
+\hat{p}(x) = q(x)\exp\left[ \lambda_0 + \sum_{ m = 1 }^M \lambda_m f_m(x) \right]
+\end{equation}
+
+\end{document}
+
+
+
+
+
+
+
