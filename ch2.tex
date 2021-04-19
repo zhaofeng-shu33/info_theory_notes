@@ -93,7 +93,9 @@ D(p||q) =& \E_{X}[ -\log\frac{q(X)}{p(X)}],\text{by Jensen's Inequality} \\
 \geq &  -\log\left(\E_{X} [\frac{q(X)}{p(X)}]\right)\\
 = & 0
 \end{align*}
-由 Jensen 不等式的取等条件，$\frac{p}{q}$应为常数
+由 Jensen 不等式的取等条件，$\frac{p}{q}$应为常数。
+另一种证明是利用不等式 $\log x \leq x - 1$：
+$D(p||q) \geq \E_{X}[1 - \frac{q(x)}{p(x)}] = 0$.
 \end{proof}
 利用相对熵的非负性，我们可以证明
 \begin{cor}
